@@ -29,8 +29,7 @@ pipeline {
             steps{
                 // deploy on container -> plugin
                  echo " ********Compile/Build code using Maven *************** "
-deploy adapters: [tomcat9(credentialsId: 'Maven-pipeline-jenkinsfile', path: '', url: 'https://192.168.137.130:8080/')], contextPath: '/apps', war: '"**/*.war"'
-              
+deploy adapters: [tomcat9(credentialsId: 'CICDwJenkinsfile', path: '', url: 'http://192.168.137.130:8080/')], contextPath: '/apps', war: '"**/*.war"'              
             }
             
         }
