@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+      tools {
+        maven 'Maven' 
+            }
+
+    stages {
+        stage("Test"){
+            steps{
+                //check if maven installed or not 
+                sh 'mvn --version'
+                // mvn test
+                echo " ********Unit Testing using Maven************* "
+                sh "mvn test"
+                
+                
+            }
+            
+        }
+        stage("Build"){
+            steps{
+                // mvn package
+                echo " ********Compile/Build code using Maven *************** "
+                sh "mvn package"
+            }
+            
+        }
+        stage("Deploy on Test"){
+            steps{
+                // deploy on container -> plugin
+                 echo " ********Compile/Build code using Maven *************** "
+deploy adapters: [tomcat9(credentialsId: 'CICDwJenkinsfile', path: '', url: 'https://192.168.137.130:8080/')], contextPath: '/apps', war: '"**/*.war"'
+              
+            }
+            
+        }
+        stage("Deploy on Prod"){            
+            steps{
+                // deploy on container -> plugin
+                echo " ********Compile/Build code using Maven *************** "
+
+            }
+        }
+    }
+    post{
+        always{
+            echo "======== Post check - always========"
+        }
+        success{
+            echo "========Post check - pipeline executed successfully ========"
+             
+        }
+        failure{
+            echo "========post check - pipeline execution failed========"
+            
+        }
+    }
+}
